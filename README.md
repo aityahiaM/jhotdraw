@@ -2,9 +2,15 @@
 
 [![Java CI with Maven](https://github.com/wumpz/jhotdraw/actions/workflows/maven.yml/badge.svg)](https://github.com/wumpz/jhotdraw/actions/workflows/maven.yml)
 
+JHotDraw is a Java-based graphics library that allows developers to create and manipulate graphical objects such as shapes, figures, and diagrams. The library has been in development since the mid-1990s and has been used in a variety of applications including drawing programs, diagram editors, and UML tools.
+
+
 ## News
 
 > **ATTENTION**: Due to the refactoring in 10.0-SNAPSHOT this version breaks API of JHotdraw. Some adaptions are needed, e.g.: attributes now using `attr()`, ...
+
+## Changes
+The recent update to JHotDraw includes several significant changes aimed at improving the library's performance, reliability, and maintainability. Here are some more details on the changes:
 
 * heavy restructuring of classes and interfaces and cleanup
   * complete attribute handling of Figure moved in class Attributes, access over **attr()**
@@ -38,9 +44,10 @@ Additional to that are in module `jhotdraw-samples-misc` more sophisticated exam
 
 ## License
 
-* LGPL V2.1
-* Creative Commons Attribution 2.5 License
+JHotDraw is licensed under the Lesser General Public License (LGPL) version 2.1 and the Creative Commons Attribution 2.5 License. This means that the library can be used, modified, and distributed freely as long as certain conditions are met, such as giving proper attribution and making any modifications publicly available.
 
 ## History 
+
+JHotDraw was initially developed by Erich Gamma in the mid-1990s and has since undergone several updates and revisions. The recent fork of JHotDraw from its original SourceForge repository is intended to continue the development and improvement of the library for future generations of developers.
 
 This is a fork of jhotdraw from http://sourceforge.net/projects/jhotdraw.
