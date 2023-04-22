@@ -7,6 +7,8 @@
  */
 package org.jhotdraw.draw.figure;
 
+import java.awt.*;
+import java.awt.font.TextLayout;
 import java.awt.geom.*;
 import java.util.*;
 import org.jhotdraw.draw.event.FigureEvent;
@@ -100,4 +102,33 @@ public class LabelFigure extends TextFigure implements FigureListener {
 
   @Override
   public void figureHandlesChanged(FigureEvent e) {}
+
+  // DRAWING
+  @Override
+  protected void drawStroke(java.awt.Graphics2D g) {}
+
+  @Override
+  protected void drawFill(java.awt.Graphics2D g) {}
+
+  @Override
+  protected void drawText(java.awt.Graphics2D g) {
+    if (getText() != null || isEditable()) {
+      TextLayout layout = getTextLayout();
+      Graphics2D g2 = (Graphics2D) g.create();
+      try {
+        // Test if world to screen transformation mirrors the text. If so it tries to
+        // unmirror it.
+        if (g2.getTransform().getScaleY() * g2.getTransform().getScaleX() < 0) {
+          AffineTransform at = new AffineTransform();
+          at.translate(0, origin.y + layout.getAscent() / 2);
+          at.scale(1, -1);
+          at.translate(0, -origin.y - layout.getAscent() / 2);
+          g2.transform(at);
+        }
+        layout.draw(g2, (float) origin.x, (float) (origin.y + layout.getAscent()));
+      } finally {
+        g2.dispose();
+      }
+    }
+  }
 }
