@@ -56,7 +56,7 @@ import org.jhotdraw.util.ResourceBundleUtil;
  * the contracts of a smaller framework inside of the JHotDraw framework for structured drawing
  * editors.<br>
  * Contract: {@link TextHolderFigure}, {@link TextCreationTool}, {@link TextAreaCreationTool},
- * {@link TextEditingTool}, {@link TextAreaEditingTool}, {@link FloatingTextField}, {@link
+ * {@link TextEditingTool}, {@link TextAreaEditingTool}, {@link FloatingText}, {@link
  * FloatingTextArea}.
  *
  * <p><em>Prototype</em><br>
@@ -71,7 +71,7 @@ import org.jhotdraw.util.ResourceBundleUtil;
 public class TextAreaCreationTool extends CreationTool implements ActionListener {
 
   private static final long serialVersionUID = 1L;
-  private FloatingTextArea textArea;
+  private FloatingText text;
   private TextHolderFigure typingTarget;
   /** Rubberband color of the tool. When this is null, the tool does not draw a rubberband. */
   private Color rubberbandColor = null;
@@ -142,16 +142,16 @@ public class TextAreaCreationTool extends CreationTool implements ActionListener
   }
 
   protected void beginEdit(TextHolderFigure textHolder) {
-    if (textArea == null) {
-      textArea = new FloatingTextArea();
+    if (text == null) {
+      text = new FloatingText();
       // textArea.addActionListener(this);
     }
     if (textHolder != typingTarget && typingTarget != null) {
       endEdit();
     }
-    textArea.createOverlay(getView(), textHolder);
-    textArea.setBounds(getFieldBounds(textHolder), textHolder.getText());
-    textArea.requestFocus();
+    text.createOverlayArea(getView(), textHolder);
+    text.setBoundsArea(getFieldBounds(textHolder), textHolder.getText());
+    text.requestFocusArea();
     typingTarget = textHolder;
   }
 
@@ -174,7 +174,7 @@ public class TextAreaCreationTool extends CreationTool implements ActionListener
       typingTarget.willChange();
       final TextHolderFigure editedFigure = typingTarget;
       final String oldText = typingTarget.getText();
-      final String newText = textArea.getText();
+      final String newText = text.getTextArea();
       if (newText.length() > 0) {
         typingTarget.setText(newText);
       } else {
@@ -186,35 +186,35 @@ public class TextAreaCreationTool extends CreationTool implements ActionListener
         }
       }
       UndoableEdit edit =
-          new AbstractUndoableEdit() {
-            private static final long serialVersionUID = 1L;
+              new AbstractUndoableEdit() {
+                private static final long serialVersionUID = 1L;
 
-            @Override
-            public String getPresentationName() {
-              ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels");
-              return labels.getString("attribute.text.text");
-            }
+                @Override
+                public String getPresentationName() {
+                  ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels");
+                  return labels.getString("attribute.text.text");
+                }
 
-            @Override
-            public void undo() {
-              super.undo();
-              editedFigure.willChange();
-              editedFigure.setText(oldText);
-              editedFigure.changed();
-            }
+                @Override
+                public void undo() {
+                  super.undo();
+                  editedFigure.willChange();
+                  editedFigure.setText(oldText);
+                  editedFigure.changed();
+                }
 
-            @Override
-            public void redo() {
-              super.redo();
-              editedFigure.willChange();
-              editedFigure.setText(newText);
-              editedFigure.changed();
-            }
-          };
+                @Override
+                public void redo() {
+                  super.redo();
+                  editedFigure.willChange();
+                  editedFigure.setText(newText);
+                  editedFigure.changed();
+                }
+              };
       getDrawing().fireUndoableEditHappened(edit);
       typingTarget.changed();
       typingTarget = null;
-      textArea.endOverlay();
+      text.endOverlayArea();
     }
     //         view().checkDamage();
   }

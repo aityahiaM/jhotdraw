@@ -40,7 +40,7 @@ import org.jhotdraw.util.ResourceBundleUtil;
  * the contracts of a smaller framework inside of the JHotDraw framework for structured drawing
  * editors.<br>
  * Contract: {@link TextHolderFigure}, {@link TextCreationTool}, {@link TextAreaCreationTool},
- * {@link TextEditingTool}, {@link TextAreaEditingTool}, {@link FloatingTextField}, {@link
+ * {@link TextEditingTool}, {@link TextAreaEditingTool}, {@link FloatingText}, {@link
  * FloatingTextArea}.
  *
  * <p><em>Prototype</em><br>
@@ -55,7 +55,7 @@ import org.jhotdraw.util.ResourceBundleUtil;
 public class TextCreationTool extends CreationTool implements ActionListener {
 
   private static final long serialVersionUID = 1L;
-  private FloatingTextField textField;
+  private FloatingText textField;
   private TextHolderFigure typingTarget;
 
   /** Creates a new instance. */
@@ -102,14 +102,14 @@ public class TextCreationTool extends CreationTool implements ActionListener {
 
   protected void beginEdit(TextHolderFigure textHolder) {
     if (textField == null) {
-      textField = new FloatingTextField();
-      textField.addActionListener(this);
+      textField = new FloatingText();
+      textField.addActionListenerField(this);
     }
     if (textHolder != typingTarget && typingTarget != null) {
       endEdit();
     }
-    textField.createOverlay(getView(), textHolder);
-    textField.requestFocus();
+    textField.createOverlayArea(getView(), textHolder);
+    textField.requestFocusArea();
     typingTarget = textHolder;
   }
 
@@ -121,7 +121,7 @@ public class TextCreationTool extends CreationTool implements ActionListener {
       typingTarget.willChange();
       final TextHolderFigure editedFigure = typingTarget;
       final String oldText = typingTarget.getText();
-      final String newText = textField.getText();
+      final String newText = textField.getTextField();
       if (newText.length() > 0) {
         typingTarget.setText(newText);
       } else {
@@ -134,35 +134,35 @@ public class TextCreationTool extends CreationTool implements ActionListener {
         }
       }
       UndoableEdit edit =
-          new AbstractUndoableEdit() {
-            private static final long serialVersionUID = 1L;
+              new AbstractUndoableEdit() {
+                private static final long serialVersionUID = 1L;
 
-            @Override
-            public String getPresentationName() {
-              ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels");
-              return labels.getString("attribute.text.text");
-            }
+                @Override
+                public String getPresentationName() {
+                  ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels");
+                  return labels.getString("attribute.text.text");
+                }
 
-            @Override
-            public void undo() {
-              super.undo();
-              editedFigure.willChange();
-              editedFigure.setText(oldText);
-              editedFigure.changed();
-            }
+                @Override
+                public void undo() {
+                  super.undo();
+                  editedFigure.willChange();
+                  editedFigure.setText(oldText);
+                  editedFigure.changed();
+                }
 
-            @Override
-            public void redo() {
-              super.redo();
-              editedFigure.willChange();
-              editedFigure.setText(newText);
-              editedFigure.changed();
-            }
-          };
+                @Override
+                public void redo() {
+                  super.redo();
+                  editedFigure.willChange();
+                  editedFigure.setText(newText);
+                  editedFigure.changed();
+                }
+              };
       getDrawing().fireUndoableEditHappened(edit);
       typingTarget.changed();
       typingTarget = null;
-      textField.endOverlay();
+      textField.endOverlayField();
     }
     //         view().checkDamage();
   }
@@ -196,8 +196,8 @@ public class TextCreationTool extends CreationTool implements ActionListener {
   public void updateCursor(DrawingView view, Point p) {
     if (view.isEnabled()) {
       view.setCursor(
-          Cursor.getPredefinedCursor(
-              isEditing() ? Cursor.DEFAULT_CURSOR : Cursor.CROSSHAIR_CURSOR));
+              Cursor.getPredefinedCursor(
+                      isEditing() ? Cursor.DEFAULT_CURSOR : Cursor.CROSSHAIR_CURSOR));
     } else {
       view.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
     }
