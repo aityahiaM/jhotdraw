@@ -26,7 +26,7 @@ import org.jhotdraw.draw.Drawing;
 import org.jhotdraw.draw.DrawingEditor;
 import org.jhotdraw.draw.io.InputFormat;
 import org.jhotdraw.draw.io.OutputFormat;
-import org.jhotdraw.draw.print.DrawingPageable;
+import org.jhotdraw.draw.locator.DrawingPageable;
 import org.jhotdraw.editor.DefaultDrawingEditor;
 import org.jhotdraw.gui.PlacardScrollPaneLayout;
 import org.jhotdraw.gui.action.ButtonFactory;

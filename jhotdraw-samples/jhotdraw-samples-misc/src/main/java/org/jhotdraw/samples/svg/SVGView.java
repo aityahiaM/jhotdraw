@@ -23,7 +23,7 @@ import org.jhotdraw.app.AbstractView;
 import org.jhotdraw.draw.Drawing;
 import org.jhotdraw.draw.DrawingEditor;
 import org.jhotdraw.draw.io.InputFormat;
-import org.jhotdraw.draw.print.DrawingPageable;
+import org.jhotdraw.draw.locator.DrawingPageable;
 import org.jhotdraw.gui.JFileURIChooser;
 import org.jhotdraw.net.URIUtil;
 import org.jhotdraw.samples.svg.io.SVGOutputFormat;

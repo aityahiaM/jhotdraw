@@ -36,7 +36,7 @@ public class ChopEllipseConnector extends ChopRectangleConnector {
   private Color getStrokeColor(Figure f) {
     return f.attr().get(STROKE_COLOR);
   }
-  
+
 
   @Override
   protected Point2D.Double chop(Figure target, Point2D.Double from) {
