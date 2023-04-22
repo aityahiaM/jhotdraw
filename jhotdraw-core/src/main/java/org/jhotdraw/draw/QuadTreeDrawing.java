@@ -343,21 +343,4 @@ public class QuadTreeDrawing extends AbstractDrawing {
     }
   }
 
-  @Override
-  public void drawCanvas(Graphics2D g) {
-    if (attr().get(CANVAS_WIDTH) != null && attr().get(CANVAS_HEIGHT) != null) {
-      // Determine canvas color and opacity
-      Color canvasColor = attr().get(CANVAS_FILL_COLOR);
-      Double fillOpacity = attr().get(CANVAS_FILL_OPACITY);
-      if (canvasColor != null && fillOpacity > 0) {
-        canvasColor =
-            new Color((canvasColor.getRGB() & 0xffffff) | ((int) (fillOpacity * 255) << 24), true);
-        // Fill the canvas
-        Rectangle2D.Double r =
-            new Rectangle2D.Double(0, 0, attr().get(CANVAS_WIDTH), attr().get(CANVAS_HEIGHT));
-        g.setColor(canvasColor);
-        g.fill(r);
-      }
-    }
-  }
 }
