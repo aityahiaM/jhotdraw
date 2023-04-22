@@ -168,21 +168,9 @@ public abstract class AbstractDrawing implements Drawing {
   /** Notify all listenerList that have registered interest for notification on this event type. */
   @Override
   public void fireUndoableEditHappened(UndoableEdit edit) {
-    UndoableEditEvent event = null;
-    if (listenerList.getListenerCount() > 0) {
-      // Notify all listeners that have registered interest for
-      // Guaranteed to return a non-null array
-      Object[] listeners = listenerList.getListenerList();
-      // Process the listeners last to first, notifying
-      // those that are interested in this event
-      for (int i = listeners.length - 2; i >= 0; i -= 2) {
-        if (event == null) {
-          event = new UndoableEditEvent(this, edit);
-        }
-        if (listeners[i] == UndoableEditListener.class) {
-          ((UndoableEditListener) listeners[i + 1]).undoableEditHappened(event);
-        }
-      }
+    UndoableEditEvent event = new UndoableEditEvent(this, edit);
+    for (UndoableEditListener l : listenerList.getListeners(UndoableEditListener.class)) {
+      l.undoableEditHappened(event);
     }
   }
 
