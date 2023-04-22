@@ -58,6 +58,8 @@ public abstract class AbstractAttributedFigure implements Figure, Cloneable {
 
   private Attributes attributes = new Attributes(this::fireAttributeChanged);
 
+  public static final float DEFAULT_STROKE_MITER_LIMIT_FACTOR = 10f;
+
   public Attributes attr() {
     return attributes;
   }
@@ -94,7 +96,7 @@ public abstract class AbstractAttributedFigure implements Figure, Cloneable {
 
   public double getStrokeMiterLimitFactor() {
     Number value = (Number) attr().get(AttributeKeys.STROKE_MITER_LIMIT);
-    return (value != null) ? value.doubleValue() : 10f;
+    return (value != null) ? value.doubleValue() : DEFAULT_STROKE_MITER_LIMIT_FACTOR;
   }
 
   @Override
