@@ -41,7 +41,7 @@ public final class Attributes {
 
   private AttributeListener listener;
 
-  private Supplier<List<Attributes>> DEPENDENT;
+  private Supplier<List<Attributes>> dependents;
 
   public Attributes() {
     this(null, null);
@@ -53,7 +53,7 @@ public final class Attributes {
 
   public Attributes(AttributeListener listener, Supplier<List<Attributes>> dependent) {
     this.listener = listener;
-    this.DEPENDENT = dependent == null ? () -> Collections.emptyList() : dependent;
+    this.dependents = dependent == null ? () -> Collections.emptyList() : dependent;
   }
 
   public void setAttributeEnabled(AttributeKey<?> key, boolean b) {
@@ -97,7 +97,7 @@ public final class Attributes {
    * applied to it.
    */
   public Object getAttributesRestoreData() {
-    List<Attributes> dependent = DEPENDENT.get();
+    List<Attributes> dependent = dependents.get();
     if (dependent.isEmpty()) {
       return getAttributes();
     } else {
@@ -116,7 +116,7 @@ public final class Attributes {
       List<Map<AttributeKey<?>, Object>> list = (List<Map<AttributeKey<?>, Object>>) restoreData;
       restoreAttributesTo(list.get(0));
       int idx = 1;
-      for (Attributes attr : DEPENDENT.get()) {
+      for (Attributes attr : dependents.get()) {
         attr.restoreAttributesTo(list.get(idx));
         idx++;
       }
@@ -150,7 +150,7 @@ public final class Attributes {
       fireAttributeChanged(key, oldValue, newValue);
     }
 
-    DEPENDENT.get().forEach(a -> a.set(key, newValue));
+    dependents.get().forEach(a -> a.set(key, newValue));
   }
 
   /**
