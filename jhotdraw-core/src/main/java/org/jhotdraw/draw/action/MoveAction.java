@@ -1,10 +1,3 @@
-/*
- * @(#)MoveAction.java
- *
- * Copyright (c) 1996-2010 The authors and contributors of JHotDraw.
- * You may not use, copy or modify this file, except in compliance with the
- * accompanying license terms.
- */
 package org.jhotdraw.draw.action;
 
 import java.awt.geom.*;
@@ -24,7 +17,8 @@ import org.jhotdraw.util.ResourceBundleUtil;
 public abstract class MoveAction extends AbstractSelectedAction {
 
   private static final long serialVersionUID = 1L;
-  private int dx, dy;
+  private static int dx;
+  private static int dy;
 
   /** Creates a new instance. */
   public MoveAction(DrawingEditor editor, int dx, int dy) {
@@ -34,8 +28,8 @@ public abstract class MoveAction extends AbstractSelectedAction {
     updateEnabledState();
   }
 
-  @Override
-  public void actionPerformed(java.awt.event.ActionEvent e) {
+  /** Moves the selected figures by dx and dy. */
+  protected void moveSelectedFigures(int dx, int dy) {
     CompositeEdit edit;
     AffineTransform tx = new AffineTransform();
     tx.translate(dx, dy);
@@ -51,51 +45,55 @@ public abstract class MoveAction extends AbstractSelectedAction {
     fireUndoableEditHappened(new TransformEdit(transformedFigures, tx));
   }
 
-  public static class East extends MoveAction {
+  public static class MoveDirection extends MoveAction {
 
     private static final long serialVersionUID = 1L;
+
+    public MoveDirection(DrawingEditor editor, int dx, int dy, String id) {
+      super(editor, dx, dy);
+      ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels");
+      labels.configureAction(this, id);
+    }
+
+    @Override
+    public void actionPerformed(java.awt.event.ActionEvent e) {
+      moveSelectedFigures(dx, dy);
+    }
+  }
+
+  public static class East extends MoveDirection {
+
     public static final String ID = "edit.moveEast";
 
     public East(DrawingEditor editor) {
-      super(editor, 1, 0);
-      ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels");
-      labels.configureAction(this, ID);
+      super(editor, 1, 0, ID);
     }
   }
 
-  public static class West extends MoveAction {
+  public static class West extends MoveDirection {
 
-    private static final long serialVersionUID = 1L;
     public static final String ID = "edit.moveWest";
 
     public West(DrawingEditor editor) {
-      super(editor, -1, 0);
-      ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels");
-      labels.configureAction(this, ID);
+      super(editor, -1, 0, ID);
     }
   }
 
-  public static class North extends MoveAction {
+  public static class North extends MoveDirection {
 
-    private static final long serialVersionUID = 1L;
     public static final String ID = "edit.moveNorth";
 
     public North(DrawingEditor editor) {
-      super(editor, 0, -1);
-      ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels");
-      labels.configureAction(this, ID);
+      super(editor, 0, -1, ID);
     }
   }
 
-  public static class South extends MoveAction {
+  public static class South extends MoveDirection {
 
-    private static final long serialVersionUID = 1L;
     public static final String ID = "edit.moveSouth";
 
     public South(DrawingEditor editor) {
-      super(editor, 0, 1);
-      ResourceBundleUtil labels = ResourceBundleUtil.getBundle("org.jhotdraw.draw.Labels");
-      labels.configureAction(this, ID);
+      super(editor, 0, 1, ID);
     }
   }
 }
