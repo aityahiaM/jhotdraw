@@ -235,18 +235,7 @@ public class DefaultDrawing extends AbstractDrawing {
     return new ReversedList<>(getChildren());
   }
 
-  /** Invalidates the sort order. */
-  private void invalidateSortOrder() {
-    needsSorting = true;
-  }
 
-  /** Ensures that the children are sorted in z-order sequence from back to front. */
-  private void ensureSorted() {
-    if (needsSorting) {
-      Collections.sort(children, Comparator.comparing(Figure::getLayer));
-      needsSorting = false;
-    }
-  }
 
   @Override
   public int indexOf(Figure figure) {
@@ -268,6 +257,19 @@ public class DefaultDrawing extends AbstractDrawing {
         g.setColor(canvasColor);
         g.fill(r);
       }
+    }
+  }
+
+  /** Invalidates the sort order. */
+  private void invalidateSortOrder() {
+    needsSorting = true;
+  }
+
+  /** Ensures that the children are sorted in z-order sequence from back to front. */
+  private void ensureSorted() {
+    if (needsSorting) {
+      Collections.sort(children, Comparator.comparing(Figure::getLayer));
+      needsSorting = false;
     }
   }
 }
