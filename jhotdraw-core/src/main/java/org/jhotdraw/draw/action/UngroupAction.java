@@ -22,8 +22,6 @@ public class UngroupAction extends GroupAction {
 
   private static final long serialVersionUID = 1L;
   public static final String ID = "edit.ungroupSelection";
-  /** Creates a new instance. */
-  private CompositeFigure prototype;
 
   /** Creates a new instance. */
   public UngroupAction(DrawingEditor editor) {
