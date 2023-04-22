@@ -84,8 +84,12 @@ public abstract class AbstractDrawing implements Drawing {
 
   @Override
   public void addInputFormat(InputFormat format) {
+    if (inputFormats.contains(format)) {
+      throw new IllegalArgumentException("Format is already present in input formats list.");
+    }
     inputFormats.add(format);
   }
+
 
   @Override
   public void addOutputFormat(OutputFormat format) {
