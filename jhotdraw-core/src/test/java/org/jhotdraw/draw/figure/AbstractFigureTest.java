@@ -18,13 +18,13 @@
  */
 package org.jhotdraw.draw.figure;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import org.jhotdraw.draw.DefaultDrawing;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -49,6 +49,19 @@ public class AbstractFigureTest {
     assertEquals(figure.getChangingDepth(), 1);
     figure.changed();
     assertEquals(figure.getChangingDepth(), 0);
+  }
+
+  @Test
+  public void testRemoveInvalidatesSortOrder() {
+    DefaultDrawing drawing = new DefaultDrawing();
+    Figure f1 = new AbstractFigureImpl();
+    Figure f2 = new AbstractFigureImpl();
+    drawing.add(f1);
+    drawing.add(f2);
+    assertTrue(drawing.getChildren().get(0) == f1);
+    assertTrue(drawing.getChildren().get(1) == f2);
+    drawing.remove(f1);
+    assertTrue(drawing.getChildren().get(0) == f2);
   }
 
   public class AbstractFigureImpl extends AbstractAttributedFigure {
